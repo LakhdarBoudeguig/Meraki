@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the Inter font and general layout */
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-sizing: border-box; /* Ensure padding doesn't increase width */
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .primary-button {
+            background-color: #b27a27;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background-color: #38ca86;
+        }
+
+        .secondary-button {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+            border: 1px solid #4f46e5;
+            margin-top: 0.75rem;
+        }
+
+        .secondary-button:hover {
+            background-color: #c7d2fe;
+        }
+
+        .message {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .success {
+            color: #10b981; /* Green-500 */
+        }
+
+        .error {
+            color: #ef4444; /* Red-500 */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Styling for the dashboard page */
+        #dashboard-section {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Wider for dashboard content */
+            text-align: left;
+        }
+
+        #dashboard-section h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 1rem;
+            color: #1a202c; /* text-gray-900 */
+            text-align: center;
+        }
+
+        #dashboard-section p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #4a5568; /* text-gray-700 */
+        }
+
+        #dashboard-section ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+        }
+
+        #dashboard-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        #dashboard-section #logout-button {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            margin-top: 1.5rem;
+        }
+
+        #dashboard-section #logout-button:hover {
+            background-color: #dc2626; /* Red-600 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="auth-container">
+        <!-- Registration Section -->
+        <Division id="register-section">
+            <h2 class="text-2xl font-bold mb-6 text-gray-900">Create Account</h2>
+            <input type="text" id="register-username" placeholder="Username" class="mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="password" id="register-password" placeholder="Password" class="mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button id="register-button" class="primary-button rounded-lg mb-2">Register</button>
+            <p id="register-message" class="message"></p>
+            <p class="mt-4 text-sm text-gray-600">Already have an account? <a href="#" id="show-login" class="text-indigo-600 hover:underline">Login here</a>.</p>
+        </div>
+
+        <!-- Login Section (Initially hidden) -->
+        <div id="login-section" class="hidden">
+            <h2 class="text-2xl font-bold mb-6 text-gray-900">Login</h2>
+            <input type="text" id="login-username" placeholder="Username" class="mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="password" id="login-password" placeholder="Password" class="mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <button id="login-button" class="primary-button rounded-lg mb-2">Login</button>
+            <p id="login-message" class="message"></p>
+            <p class="mt-4 text-sm text-gray-600">Don't have an account? <a href="#" id="show-register" class="text-indigo-600 hover:underline">Register here</a>.</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Section (Initially hidden) -->
+    <div id="dashboard-section" class="hidden">
+        <h2 class="text-3xl font-bold mb-6">Welcome, User!</h2>
+        <p class="text-gray-700 mb-4">
+            This is your personalized dashboard. You've successfully logged in. This section can contain
+            any content you'd like to display to authenticated users.
+        </p>
+        <p class="text-gray-700 mb-6">
+            For example, you could display:
+        </p>
+        <ul class="list-disc list-inside mb-6 text-gray-700">
+            <li>Personalized user information</li>
+            <li>Recent activity or notifications</li>
+            <li>Links to other private sections of your application</li>
+            <li>A feed of content relevant to the user</li>
+            <li>Settings or profile management options</li>
+        </ul>
+        <p class="text-gray-700">
+            Feel free to replace this content with your own HTML/CSS page content.
+        </p>
+        <button id="logout-button" class="primary-button rounded-lg">Logout</button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const registerSection = document.getElementById('register-section');
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const authContainer = document.getElementById('auth-container');
+
+        const registerUsernameInput = document.getElementById('register-username');
+        const registerPasswordInput = document.getElementById('register-password');
+        const registerButton = document.getElementById('register-button');
+        const registerMessage = document.getElementById('register-message');
+        const showLoginLink = document.getElementById('show-login');
+
+        const loginUsernameInput = document.getElementById('login-username');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginButton = document.getElementById('login-button');
+        const loginMessage = document.getElementById('login-message');
+        const showRegisterLink = document.getElementById('show-register');
+
+        const logoutButton = document.getElementById('logout-button');
+
+        // --- IMPORTANT SECURITY WARNING ---
+        // Storing user credentials directly in localStorage like this is INSECURE for production applications.
+        // In a real application, passwords should never be stored client-side,
+        // and authentication should be handled securely on a server with proper hashing and session management.
+        // This example is for demonstration purposes only to show the client-side flow.
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+
+        // Function to display a specific section and hide others
+        function showSection(sectionId) {
+            // Hide all main sections
+            registerSection.classList.add('hidden');
+            loginSection.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            authContainer.classList.add('hidden'); // Hide auth container by default
+
+            // Show the requested section
+            if (sectionId === 'register-section') {
+                registerSection.classList.remove('hidden');
+                authContainer.classList.remove('hidden');
+                registerMessage.textContent = ''; // Clear previous messages
+                registerMessage.classList.remove('success', 'error');
+                registerUsernameInput.value = ''; // Clear inputs
+                registerPasswordInput.value = '';
+            } else if (sectionId === 'login-section') {
+                loginSection.classList.remove('hidden');
+                authContainer.classList.remove('hidden');
+                loginMessage.textContent = ''; // Clear previous messages
+                loginMessage.classList.remove('success', 'error');
+                loginUsernameInput.value = ''; // Clear inputs
+                loginPasswordInput.value = '';
+            } else if (sectionId === 'dashboard-section') {
+                dashboardSection.classList.remove('hidden');
+            }
+        }
+
+        // Handle User Registration
+        registerButton.addEventListener('click', () => {
+            const username = registerUsernameInput.value.trim();
+            const password = registerPasswordInput.value.trim();
+
+            if (!username || !password) {
+                registerMessage.textContent = 'Please enter both username and password.';
+                registerMessage.classList.remove('success');
+                registerMessage.classList.add('error');
+                return;
+            }
+
+            if (users[username]) {
+                registerMessage.textContent = 'Username already exists. Please choose a different one.';
+                registerMessage.classList.remove('success');
+                registerMessage.classList.add('error');
+                return;
+            }
+
+            // In a real app, hash the password before storing!
+            users[username] = password; // Storing plain password for demo purposes
+            localStorage.setItem('users', JSON.stringify(users));
+
+            registerMessage.textContent = 'Registration successful! You can now log in.';
+            registerMessage.classList.remove('error');
+            registerMessage.classList.add('success');
+
+            // Optionally, switch to login page after successful registration
+            setTimeout(() => {
+                showSection('login-section');
+            }, 1500);
+        });
+
+        // Handle User Login
+        loginButton.addEventListener('click', () => {
+            const username = loginUsernameInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+
+            if (!username || !password) {
+                loginMessage.textContent = 'Please enter both username and password.';
+                loginMessage.classList.remove('success');
+                loginMessage.classList.add('error');
+                return;
+            }
+
+            if (users[username] && users[username] === password) {
+                loginMessage.textContent = 'Login successful!';
+                loginMessage.classList.remove('error');
+                loginMessage.classList.add('success');
+                // Store login status in sessionStorage or a more persistent way if needed
+                sessionStorage.setItem('loggedInUser', username); // Simple session tracking
+
+                setTimeout(() => {
+                    showSection('dashboard-section');
+                }, 500); // Short delay to show success message
+            } else {
+                loginMessage.textContent = 'Invalid username or password.';
+                loginMessage.classList.remove('success');
+                loginMessage.classList.add('error');
+            }
+        });
+
+        // Handle Logout
+        logoutButton.addEventListener('click', () => {
+            sessionStorage.removeItem('loggedInUser'); // Clear session
+            showSection('login-section');
+        });
+
+        // Navigation links between register and login
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('login-section');
+        });
+
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('register-section');
+        });
+
+        // Initial check on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                showSection('dashboard-section'); // If a user was logged in previously in the session
+            } else {
+                showSection('register-section'); // Otherwise, show register form initially
+            }
+        });
+    </script>
+</body>
+</html>
